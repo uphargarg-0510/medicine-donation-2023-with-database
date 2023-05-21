@@ -1,0 +1,7 @@
+.cross{
+    width: 30px; height: 30px;  
+    background-size: contain;
+    cursor: pointer;
+    float: right;
+    background-repeat: no-repeat;
+}

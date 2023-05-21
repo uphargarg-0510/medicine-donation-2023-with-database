@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link rel="stylesheet" href="css/dash-donor.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <script src="js/jquery-1.8.2.min.js"></script>
+    <script>
+      $(document).ready(function(){
+
+          if(localStorage.getItem("activeUser")==null)
+          window.location.replace("/index.html");
+
+
+        $("#update").click(function(){
+          var url="/settings?txtUEmail=" + $("#txtUEmail").val() + "&&txtUPass=" + $("#txtUPass").val() + "&&txtNewPass=" + $("#txtNewPass").val();
+          $.get(url,function(resp){
+            alert(resp);
+          })
+        })
+
+        $("#logout").click(function(){
+          //alert();
+          localStorage.removeItem("activeUser");
+          window.location.replace("/index.html");
+        })
+      })
+    </script>
+  </head>
+  <body>
+    <nav class="navbar bg-primary">
+        <div class="container-fluid d-flex justify-content-center">
+          <span class="navbar-brand mb-0 h1" style="color: white; font-size: 30px; text-align: center;">Hii Donor!!</span>
+          <div>
+            <span class="navbar-brand mb-0 h1" style="color: white; font-size: 25px;">
+                Always give without remembering and always receive without forgetting!!
+            </span>
+          </div>
+        </div>
+    </nav>
+
+
+      <div class="container d-flex justify-content-around mt-5">
+        <div class="card" style="width: 18rem;">
+            <img src="pics/profilepic1-removebg-preview.png" style="height: 47%;"  class="card-img-top rounded profilepicsize" alt="...">
+            <div class="card-body">
+              <div class="d-flex justify-content-center">
+                <h5 class="card-title">Profile</h5>
+              </div>
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              <div class="d-flex justify-content-center">
+                <a href="profile-donor.html" class="btn btn-primary">Profile</a>
+              </div>
+            </div>
+        </div>
+
+        <div class="card" style="width: 18rem;">
+            <img src="pics/availmed.jpg" style="height: 47%;" class="card-img-top" alt="...">
+            <div class="card-body">
+              <div class="d-flex justify-content-center">
+              <h5 class="card-title">Donate Medicine</h5></div>
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              <div class="d-flex justify-content-center">
+              <a href="avail-medicine.html" class="btn btn-primary">Donate Medicine</a></div>
+            </div>
+        </div>
+
+        <div class="card" style="width: 18rem;">
+            <img src="pics/setting.jpg" style="height:45% ; width: 180px; margin-left: 60px; margin-top: 10px;" class="card-img-top" alt="...">
+            <div class="card-body">
+              <div class="d-flex justify-content-center">
+              <h5 class="card-title">Settings</h5></div>
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              <div class="d-flex justify-content-center">
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#setting">
+                  Settings
+                </button>
+              </div> 
+            </div>
+        </div>
+
+        <div class="card" style="width: 18rem;">
+            <img src="pics/logout.png" style="height: 45%; width: 200px; margin-left: 45px; margin-top:10px ;" class="card-img-top" alt="...">
+            <div class="card-body">
+              <div class=" d-flex justify-content-center">
+                <h5 class="card-title">Log Out</h5>
+              </div>
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              <div class="d-flex justify-content-center">
+                <a href="#" id="logout" class="btn btn-primary">Logout</a></div>
+            </div>
+          </div> 
+      </div>
+
+      <!-- -------------------------setting modal--------------------- -->
+      <div class="modal fade" id="setting" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Setting</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form class="row g-3">
+                <div class="col-md-12">
+                  <label for="txtUEmail" class="form-label">Email</label>
+                  <input type="email" class="form-control" id="txtUEmail" name="txtUEmail">
+                </div>
+                <div class="col-md-12">
+                  <label for="txtUPass" class="form-label">Password</label>
+                  <input type="password" class="form-control" id="txtUPass" name="txtUPass">
+                </div>
+                <div class="col-md-12">
+                  <label for="txtNewPass" class="form-label">New Password</label>
+                  <input type="password" class="form-control" id="txtNewPass" name="txtNewPass">
+                </div>
+            </div>
+            <div class="modal-footer">
+              <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+              <button type="button" class="btn btn-primary" id="update">Update</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+     
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+  </body>
+</html>

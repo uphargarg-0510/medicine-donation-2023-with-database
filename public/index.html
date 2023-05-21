@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap demo</title>
+  <link rel="stylesheet" href="css/index.css">
+  <!-- <script src="js/index.js"></script> -->
+  <script src="js/jquery-1.8.2.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+  <script>
+    $(document).ready(function () {
+
+
+
+      // $("#txtEmail").blur(function () {
+      //   var email = $(this).val();
+      //   if (email.length == 0) {
+      //     document.querySelector("#chkEmail").innerHTML = " <b>(Fill value Plz)</b>";
+      //   }
+      //   else {
+      //     var r = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+      //     if (r.test(email) == true) {
+      //       $(this).css("background-color", "green");
+      //     }
+      //     else {
+      //       $(this).css("background-color", "red");
+      //       alert("Please Enter a valid Email");
+      //     }
+      //     document.querySelector("#chkEmail").innerHTML = " *";
+      //   }
+      // });
+
+      // $("#txtPass").blur(function(){
+      //       var x=$(this).val();
+      //       var r=/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
+
+      //       if(r.test(x)==true)
+      //           $(this).css("background-color","green");
+      //        else
+      //        $(this).css("background-color","red");
+                
+
+
+      //       alert(x);
+      //   });
+
+      $("#sendsignup").click(function () {
+        var url = "/signup?txtEmail=" + $("#txtEmail").val() + "&&txtPass=" + $("#txtPass").val() + "&&utype=" + $("#utype").val();
+        $.get(url, function (resp) {
+          alert(resp);
+        })
+      })
+
+      $("#sendlogin").click(function () {
+        var url = "/login?loginEmail=" + $("#loginEmail").val() + "&&loginPassword=" + $("#loginPassword").val();
+        $.getJSON(url, function (jsonobject) {
+          if (jsonobject.length == 0) {
+            alert("Invalid Email/Password or Expired");
+          }
+          else {
+            localStorage.setItem("activeUser", $("#loginEmail").val());
+            if (jsonobject[0].utype == "Donor") {
+              window.location.replace("/dash-donor.html");
+            }
+            if (jsonobject[0].utype == "Needy") {
+              window.location.replace("/dash-needy.html");
+            }
+          }
+        })
+      })
+
+      $('.carousel').carousel('cycle')({
+        interval: 2
+      })
+    })
+  </script>
+</head>
+
+<body>
+  <nav class="navbar bg-primary fixed-top">
+    <div class="m-2 ">
+      <span class="navbar-brand mb-0 h1" style="color: white; font-size: 30px;">Medicine-Donation</span>
+    </div>
+
+    <div>
+      <form class="container-fluid gap-3 d-flex justify-content-end">
+        <button type="button" id="signbtn" class="btn btn-outline-light border border-3" data-bs-toggle="modal"
+          data-bs-target="#signup">
+          Sign Up
+        </button>
+        <button type="button" id="loginbtn" class="btn btn-outline-light border border-3" data-bs-toggle="modal"
+          data-bs-target="#login">
+          Login
+        </button>
+      </form>
+    </div>
+    <!-- </div> -->
+  </nav>
+
+  <!-- <div id="signbox" class="col-md-5 m-5 rounded shadow p-3 mb-5 bg-white rounded border border-3 "
+    style="display: none;">
+    <form class="row g-3">
+      <div class="col-md-12 " id="crossbtn">
+        <img src="uploads/cross.png" class="cross" alt="">
+      </div>
+      <div class="col-md-12">
+        <label for="inputEmail4" class="form-label">Email</label>
+        <input type="email" class="form-control" id="inputEmail4">
+      </div>
+      <div class="col-md-12">
+        <label for="inputPassword4" class="form-label">Password</label>
+        <input type="password" class="form-control" id="inputPassword4">
+      </div>
+
+
+      <div class="col-md-12">
+        <label for="inputState" class="form-label">User Type</label>
+        <select id="inputState" class="form-select">
+          <option selected>-Select-</option>
+          <option>Donor</option>
+          <option>Needy</option>
+        </select>
+      </div>
+
+      <div class="col-12">
+        <button type="button" class="btn btn-primary">Sign Up</button>
+      </div>
+    </form>
+  </div> -->
+
+  <!----------------------------------------------Sign up------------------------------------------------->
+
+  <div class="modal fade" id="signup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header ">
+          <h5 class="modal-title" id="exampleModalLabel">Sign Up</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form class="row g-3" method="get">
+            <div class="col-md-12">
+              <label for="txtEmail" class="form-label">Email</label><span id="chkEmail"> *</span>
+              <input type="email" class="form-control" name="txtEmail" id="txtEmail">
+
+            </div>
+            <div class="col-md-12">
+              <label for="txtPass" class="form-label">Password</label>
+              <input type="password" class="form-control " name="txtPass" id="txtPass">
+
+              <!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
+
+            </div>
+            <div class="col-md-12">
+              <label for="utype" class="form-label">User Type</label>
+              <select id="utype" name="utype" class="form-select">
+                <option selected disabled>-Select-</option>
+                <option>Donor</option>
+                <option>Needy</option>
+              </select>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+          <button type="button" class="btn btn-primary" id="sendsignup">Sign Up</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!------------------------------------------login start--------------------------------------------->
+  <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Launch demo modal
+  </button> -->
+
+  <!-- Modal -->
+
+  <div class="modal fade" id="login" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Log In</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form class="row g-3">
+            <div class="col-md-12">
+              <label for="loginEmail" class="form-label">Email</label>
+              <input type="email" class="form-control" id="loginEmail" name="loginEmail">
+            </div>
+            <div class="col-md-12">
+              <label for="loginPassword" class="form-label">Password</label>
+              <input type="password" class="form-control" id="loginPassword" name="loginPassword">
+            </div>
+        </div>
+        <div class="modal-footer">
+          <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+          <button type="button" class="btn btn-primary" id="sendlogin">Login</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="carouselExampleCaptions" class="carousel slide border border-3 mt-2" data-bs-ride="false">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
+        aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
+        aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
+        aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="pics/img1.jpg" class="d-block w-100" alt="...">
+        <div class="carousel-caption d-none d-md-block">
+          <h1>Happy Faces Of Donor & Needy</h2>
+            <!-- <p>Some representative placeholder content for the first slide.</p> -->
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img src="pics/img2.jpg" class="d-block w-100" alt="...">
+        <div class="carousel-caption d-none d-md-block">
+          <h1>Happy Faces Of Donor & Needy</h2>
+            <!-- <p>Some representative placeholder content for the second slide.</p> -->
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img src="pics/img5.png" class="d-block w-100" alt="...">
+        <div class="carousel-caption d-none d-md-block">
+          <!-- <h5>Third slide label</h5>
+          <p>Some representative placeholder content for the third slide.</p> -->
+        </div>
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+
+  <!-- <div class="mt-1">
+    <!-- <div  width="100%" style="text-align: center; color: white; background-color: rgb(29, 29, 250); border: 5px; height: 50%;">
+      <h2>Our Services</h2>
+    </div> 
+
+    <div class="card border border-3" style="height:200px ;">
+      <center><div class="card-body bg-primary " style="height:70px ;">
+        <span  style="color: white;  font-size: 30px;">Our Services</span>
+      </div></center>
+    </div>
+
+
+
+
+  </div> -->
+
+  <nav class="navbar bg-light opacity-75 border border-1 border-primary">
+    <div class="container-fluid justify-content-center">
+      <span class="navbar-brand mb-0 h1" style="font-size: 30px; color: blue; ">Our Services</span>
+    </div>
+  </nav>
+
+
+  <div class="container d-flex justify-content-evenly mt-5">
+    <div class="card" style="width: 18rem;">
+      <center><img src="pics/don med.png" height="200px" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Donate Medicine</h5>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+            content.</p>
+          <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+        </div>
+      </center>
+    </div>
+
+    <div class="card" style="width: 18rem;">
+      <center><img src="pics/get med.png" height="200px" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Get Medicine For Free</h5>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+            content.</p>
+          <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+        </div>
+      </center>
+    </div>
+
+    <div class="card" style="width: 18rem;">
+      <center><img src="pics/mission.png" height="200px" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Mission</h5>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+            content.</p>
+          <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+        </div>
+    </div>
+    </center>
+  </div>
+
+  <nav class="navbar bg-light opacity-75 border border-1 border-primary mt-5">
+    <div class="container-fluid justify-content-center">
+      <span class="navbar-brand mb-0 h1" style="font-size: 30px; color: blue;">Reach Us</span>
+    </div>
+  </nav>
+
+  <div class="">
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3410.726564801246!2d75.70295481500334!3d31.255991981457843!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391a5f5e9c489cf3%3A0x4049a5409d53c300!2sLovely%20Professional%20University!5e0!3m2!1sen!2sin!4v1658416238456!5m2!1sen!2sin"
+      width="100%" height="500" style="border:0;" allowfullscreen="" loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </div>
+
+  <nav class="navbar bg-light opacity-75 border border-1 border-primary " style="height: 50px;">
+    <div class="container-fluid justify-content-center" style="margin-top: -8px;">
+      <span class="navbar-brand mb-0 h1" style="font-size: 30px; color: blue;">Meet The Developers</span>
+    </div>
+  </nav>
+
+  <div class="container d-flex justify-content-around mt-5 ">
+    <div class="card mb-3 border border-1 border-primary" style="max-width: 540px;">
+      <div class="row g-0">
+        <div class="col-md-4">
+          <img src="pics/Developer1.jpg" class="img-fluid rounded-start" alt="...">
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title">Er.Uphar Garg</h5>
+            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
+              content. This content is a little bit longer.</p>
+            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-3 border border-1 border-primary" style="max-width: 540px;">
+      <div class="row g-0">
+        <div class="col-md-4">
+          <img src="pics/Developed By.jpg" style="height: 330px; width: 400px;" class="img-fluid rounded-start"
+            alt="...">
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title">Mr.Rajesh Kumar Bansal</h5>
+            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
+              content. This content is a little bit longer.</p>
+            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <nav class="navbar bg-primary opacity-75" style="height: 100px;">
+    <div class="container-fluid justify-content-center" style="margin-top: -5px;">
+      <span class="navbar-brand mb-0 h1" style="font-size: 10px; color: white;">
+        <p>
+          <center>
+            <h6>copyright <i class="fa fa-copyright fa-1x" aria-hidden="true"></i> 2020-2024</h6>
+            <!-- <span style="font-size: 10px; margin-top: -15px;"> -->
+            About | Privacy Policy | Cookie Policy | Update Consent | Terms & Conditions | Editorial Guidelines |
+            Affiliate Disclosure | Contact Us
+            <!-- </span> -->
+            <h6>
+              <i class="fa fa-facebook-official fa-1x" aria-hidden="true"></i>
+              <i class="fa fa-instagram fa-1x" aria-hidden="true"></i>
+              <i class="fa fa-twitter-square fa-1x" aria-hidden="true"></i>
+              <i class="fa fa-linkedin-square fa-1x" aria-hidden="true"></i>
+            </h6>
+
+
+          </center>
+        </p>
+      </span>
+    </div>
+  </nav>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

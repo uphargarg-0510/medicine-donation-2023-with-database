@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
+
+    <script src="js/jquery-1.8.2.min.js"></script>
+
+    <script>
+        function loadidFile(ref) {
+          var image = document.getElementById('idprev');
+          image.src = URL.createObjectURL(ref.files[0]);
+        };
+
+        function loadimgFile(ref) {
+          var image = document.getElementById('imgprev');
+          image.src = URL.createObjectURL(ref.files[0]);
+        };
+
+       
+    </script>
+
+    <script>
+         $(document).ready(function(){
+
+            var activeUser=localStorage.getItem("activeUser");
+            $("#txtDonorEmail").val(activeUser).prop("readonly",true);
+            // alert(activeUser);
+
+            $("#btnsearch").click(function(){
+                var mail=$("#txtDonorEmail").val();
+                var url="/search-fill?txtDonorEmail="+ mail;
+                $.getJSON(url,function(jsonobject){
+                    if(jsonobject.length==0)
+                    {
+                        alert("SORRY!! There is no such Email :( ");
+                    }
+                    else
+                    {
+                        $("#txtDonorFname").val(jsonobject[0].name);
+                        $("#txtDonorLname").val(jsonobject[0].lname);
+                        $("#txtDonorMobileNumber").val(jsonobject[0].mobile);
+                        $("#txtDonorAddress").val(jsonobject[0].address);
+                        $("#txtDonorCity").val(jsonobject[0].city);
+                        $("#txtDonorState").val(jsonobject[0].state);
+                        $("#txtDonorCityZip").val(jsonobject[0].zip);
+                        $("#txtDonorSelectId").val(jsonobject[0].prooftype);
+                        $("#txtDonorContactTime").val(jsonobject[0].timings);
+                        
+                        $("#idprev").prop("src","uploads/"+jsonobject[0].proofpic);
+                        $("#imgprev").prop("src","uploads/"+jsonobject[0].profilepic);
+
+
+                        $("#hdn1").val(jsonobject[0].proofpic);
+                        $("#hdn2").val(jsonobject[0].profilepic);
+
+                    }
+                })
+            })
+
+
+
+
+            $("#txtDonorMobileNumber").blur(function(){
+                var mob=$("#txtDonorMobileNumber").val();
+                var r=/^[7-9]{1}[0-9]{9}$/;
+
+                if(r.test(mob)==true)
+                {
+                    alert("ok checked");
+                }
+                else
+                {
+                    alert("Please Give a Valid Mobile Number");
+                }
+                
+            })
+        })
+    </script>
+
+</head>
+
+<body>
+    <nav class="navbar bg-primary fixed-top">
+        <div class="container-fluid justify-content-center">
+            <span class="navbar-brand mb-0 h1" style="font-size: 30px; color: white;">Donor Profile</span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <form class="row g-4 mt-5 justify-content-center" method="post" enctype="multipart/form-data" >
+            <input type="hidden" id="hdn1" name="hdn1">
+            <input type="hidden" id="hdn2" name="hdn2">
+            <div class="col-md-10">
+                <div class="col-md-12">
+                    <label for="txtDonorEmail" class="form-label">Email Id</label>
+                    <div class="col-md-12 d-flex gap-3">
+                        <input type="text" class="form-control"  id="txtDonorEmail" name="txtDonorEmail"
+                            required>
+                        <button class="btn btn-primary" type="button" id="btnsearch" name="btnsearch">Search</button>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-md-5">
+                <label for="txtDonorFname"  class="form-label">First name</label>
+                <input type="text" class="form-control" id="txtDonorFname" name="txtDonorFname" value="" required>
+                <div class="valid-tooltip">
+                    Looks good!
+                </div>
+            </div>
+            <div class="col-md-5">
+                <label for="txtDonorLname" class="form-label">Last name</label>
+                <input type="text" class="form-control" id="txtDonorLname" name="txtDonorLname" value="" required>
+                <div class="valid-tooltip">
+                    Looks good!
+                </div>
+            </div>
+
+
+            <div class="col-md-10">
+                <label for="txtDonorAddress" class="form-label">Address</label>
+                <input type="text" class="form-control" id="txtDonorAddress" name="txtDonorAddress" value="" required>
+                
+            </div>
+
+
+            <div class="col-md-4">
+                <label for="txtDonorCity" class="form-label">City</label>
+                <input type="text" class="form-control" value="" id="txtDonorCity" name="txtDonorCity" required>
+                <div class="invalid-tooltip">
+                    Please provide a valid city.
+                </div>
+            </div>
+            <div class="col-md-3 position-relative">
+                
+                <label for="txtDonorState" class="form-label">State</label>
+                <select class="form-select" id="txtDonorState" name="txtDonorState" required>
+                    <option disabled selected value="state">Select State</option>
+                    <option value="punjab">Punjab</option>
+                    <option value="haryana">Haryana</option>
+                    <option value="bihar">Bihar</option>
+                    <option value="uttar pradesh">Uttar Pradesh</option>
+                    <option value="ap">Andra Pradesh</option>
+                    <option value="karnatka">Karnatka</option>
+                    <option value="maharashtra">Maharashtra</option>
+                    <option value="westbengal">West Bengal</option>
+                    <option value="tamilnadu">tamil Nadu</option>
+                    <option value="assam">Assam</option>
+                    <option value="gujrat">Gujrat</option>
+                    <option value="odisha">Odisha</option>
+                    <option value="tripura">Tripura</option>
+                    <option value="uttrakhand">Uttrakhand</option>
+                    <option value="chhattisgarh">Chhattisgarh</option>
+                    <option value="sikkim">Sikkim</option>
+                    <option value="hp">Himachal Pradesh</option>
+                    <option value="kerala">Kerala</option>
+                    <option value="Rajasthan">Rajasthan</option>
+                    <option value="Mizoram">Mizoram</option>
+                    <option value="Madhya Pradesh">Madhya Pradesh</option>
+                    <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                    <option value="Goa">Goa</option>
+                </select>
+                <div class="invalid-tooltip">
+                    Please select a valid state.
+                </div>
+            </div>
+            <div class="col-md-3 position-relative">
+                <label for="txtDonorCityZip" class="form-label">Zip</label>
+                <input type="text" class="form-control" value="" id="txtDonorCityZip" name="txtDonorCityZip" required>
+                <div class="invalid-tooltip">
+                    Please provide a valid zip.
+                </div>
+            </div>
+
+            <div class="col-md-4 position-relative">
+                <label for="txtDonorSelectId" class="form-label">Select Id</label>
+                <select class="form-select"  id="txtDonorSelectId" name="txtDonorSelectId" required>
+                    <option selected disabled value="">Choose ID</option>
+                    <option value="Aadhar">Aadhar Card</option>
+                    <option value="voter">Voter Card</option>
+                    <option value="lisence">Driving Lisence</option>
+                </select>
+                <div class="invalid-tooltip">
+                    Please select a valid state.
+                </div>
+            </div>
+
+
+            <div class="col-md-3">
+                <label for="txtDonorMobileNumber" class="form-label">Mobile Number</label>
+                <input type="text" class="form-control" id="txtDonorMobileNumber" name="txtDonorMobileNumber" value="" required>
+                <div class="valid-tooltip">
+                    Looks good!
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <label for="txtDonorContactTime" class="form-label">Contact Time</label>
+                <input type="text" class="form-control" id="txtDonorContactTime" name="txtDonorContactTime" value="" required>
+                <div class="valid-tooltip">
+                    Looks good!
+                </div>
+
+                
+            </div>
+
+
+            <div class="col-md-5 ">
+                <label class="form-label" for="DonorId">Upload Id</label>
+                <input type="file" class="form-control" id="DonorId" name="DonorId" onchange="loadidFile(this);">
+            </div>
+            <div class="col-md-5 ">
+                <label class="form-label" for="DonorImg">Upload Image</label>
+                <input type="file" class="form-control" id="DonorImg" name="DonorImg" onchange="loadimgFile(this);">
+            </div>
+
+            <div class="col-md-5">
+                <img src="pics/no image.jpg" class="img-thumbnail" alt="..." id="idprev" width="100" height="100">
+            </div>
+
+            <div class="col-md-5">
+                <img src="pics/no image.jpg" class="img-thumbnail" alt="..." id="imgprev" width="100" height="100">
+            </div>
+
+
+            <div class="col-md-10 d-flex gap-5 justify-content-center">
+                <button class="btn btn-primary" type="submit" formaction="/donorprofile">Save</button>
+                <button class="btn btn-primary" type="submit" formaction="/profile-update">Update</button>
+            </div>
+        </form>
+
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
